@@ -1,7 +1,6 @@
 from web3 import Web3
 import requests
 from web3.middleware import geth_poa_middleware
-import random
 from time import sleep
 
 combo_url = 'https://rpc.combonetwork.io'
