@@ -97,9 +97,12 @@ def mint_nft(private_key):
 
 
 if __name__ == "__main__":
-    prv_key = "eb59b43a8f4ec96644438d13d034f64c0a9d428f322783939e2908bdebbb6490"
-    account = w3_combo.eth.account.from_key(prv_key)
-    
-    if bridge_bnb(prv_key):
-        if join_social(account.address):
-            mint_nft(prv_key)
+    with(open('accounts.txt', 'r')) as acc_files:
+        prv_keys = acc_files.readlines()
+        for key in prv_keys:
+            prv_key = key.replace('\n')
+            account = w3_combo.eth.account.from_key(prv_key)
+            
+            if bridge_bnb(prv_key):
+                if join_social(account.address):
+                    mint_nft(prv_key)
