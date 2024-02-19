@@ -16,5 +16,5 @@
 
 1. Склонировать репозиторий себе.
 1.2. Установить зависимости:
-```python -m pip install -r requirements.txt```
-2. Добавить в ```accounts.txt``` приватные ключи с балансом >0.0014$BNB.
+    `python -m pip install -r requirements.txt`
+2. Добавить в ```accounts.txt``` приватные ключи с балансом >0.00065$BNB.

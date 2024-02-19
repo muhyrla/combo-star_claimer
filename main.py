@@ -37,7 +37,7 @@ def bridge_bnb(private_key):
     w3_bnb = Web3(Web3.HTTPProvider('https://rpc.ankr.com/bsc'))
     contract_address = '0xAF0721ecf5B087eF67731188925C83DBC02f46Fb'
 
-    to_bridge = '0.00005'
+    to_bridge = '0.00004'
     mingaslimit = 1
     extrabytes = b'64'
 
