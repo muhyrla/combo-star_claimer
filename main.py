@@ -99,7 +99,7 @@ if __name__ == "__main__":
     with(open('accounts.txt', 'r')) as acc_files:
         prv_keys = acc_files.readlines()
         for key in prv_keys:
-            prv_key = key.replace('\n')
+            prv_key = key.replace('\n').split(';')[0]
             account = w3_combo.eth.account.from_key(prv_key)
             
             if bridge_bnb(prv_key):
