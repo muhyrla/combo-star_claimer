@@ -37,7 +37,7 @@ def bridge_bnb(private_key):
     w3_bnb = Web3(Web3.HTTPProvider('https://rpc.ankr.com/bsc'))
     contract_address = '0xAF0721ecf5B087eF67731188925C83DBC02f46Fb'
 
-    to_bridge = '0.00004'
+    to_bridge = '0.00002'
     mingaslimit = 1
     extrabytes = b'64'
 
@@ -48,19 +48,31 @@ def bridge_bnb(private_key):
         contract = w3_bnb.eth.contract(address=contract_address, abi=abi)
         w3_bnb.middleware_onion.inject(geth_poa_middleware, layer=0)
 
+        transaction_est = contract.functions.bridgeETH(mingaslimit, extrabytes).build_transaction({
+        'from': account.address,
+        'value': w3_bnb.to_wei(to_bridge, 'ether'),
+        'nonce': w3_bnb.eth.get_transaction_count(account.address),
+        'maxPriorityFeePerGas': w3_bnb.to_wei('1', 'gwei'),
+        'maxFeePerGas': w3_bnb.to_wei('3', 'gwei')
+        }) 
+
+        gas_estimate = w3_bnb.eth.estimate_gas(transaction_est)
+
         transaction = contract.functions.bridgeETH(mingaslimit, extrabytes).build_transaction({
         'value': w3_bnb.to_wei(to_bridge, 'ether'),
-        'gas': 200000,
-        'gasPrice': w3_bnb.eth.gas_price,
+        'gas': gas_estimate,
         'from': account.address,
-        'nonce': w3_bnb.eth.get_transaction_count(account.address)
-        }) 
+        'nonce': w3_bnb.eth.get_transaction_count(account.address),
+        'maxPriorityFeePerGas': w3_bnb.to_wei('1', 'gwei'),
+        'maxFeePerGas': w3_bnb.to_wei('3', 'gwei')
+        })
 
         signed_tx = w3_bnb.eth.account.sign_transaction(transaction, private_key)
         tx_hash = w3_bnb.eth.send_raw_transaction(signed_tx.rawTransaction)
         print(f'Успешно забриджил {tx_hash.hex()}')
         sleep(100)
         return True
+
 
 
 def mint_nft(private_key):
